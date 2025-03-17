@@ -58,7 +58,7 @@ deepseek-rag
 # Installation
 1. Clone the repository:
 ```
-git clone https://github.com/delete3GM/DeepSeek-RAG.git
+git clone https://github.com/l1anch1/DeepSeek-RAG.git
 cd DeepSeek-RAG
 ```
  
