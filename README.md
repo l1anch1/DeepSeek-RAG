@@ -65,6 +65,7 @@ cd DeepSeek-RAG
 2. Create and activate a virtual environment (recommended):
 ```
 conda create -n deepseek_rag python=3.11
+conda activate deepseek_rag
 ``` 
 
 3. Install dependencies:
@@ -86,7 +87,12 @@ python ./scripts/test_model.py
 ``` 
 
 2. Place your documents in the data/documents directory
-- Supported formats: PDF, TXT, CSV
+
+| Format | Support |
+|--------|---------|
+| PDF    | ✓       |
+| TXT    | ✓       |
+| CSV    | ✓       |
 
 3. Start the web application:
 ```
@@ -107,3 +113,7 @@ If you want to contribute to the project, please follow these steps:
 3. Commit your changes (`git commit -m 'Add some amazing feature'`)
 4. Push to the branch (`git push origin feature/amazing-feature`)
 5. Open a Pull Request
+
+
+# Contact
+For questions or support, please open an issue on the GitHub repository or contact the maintainer at <mailto:asherlii@outlook.com>.
