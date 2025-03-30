@@ -154,7 +154,10 @@ def rebuild_knowledge_base():
             )
         else:
             return jsonify(
-                {"status": "error", "message": "Failed to rebuild the knowledge base"}
+                {
+                    "status": "error",
+                    "message": "Failed to rebuild the knowledge base",
+                }
             )
     except Exception as e:
         return jsonify(

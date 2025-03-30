@@ -59,13 +59,14 @@ def process_documents(documents: List[Document], debug: bool = True) -> List[Doc
         text = doc.page_content
 
         text = re.sub(r"([\u4e00-\u9fff])\s+([\u4e00-\u9fff])", r"\1\2", text)
-        # 如果有连续多个空格隔开的中文，多次应用正则表达式直到没有变化
+
+        # handle spaces between Chinese characters
         old_text = ""
         while old_text != text:
             old_text = text
             text = re.sub(r"([\u4e00-\u9fff])\s+([\u4e00-\u9fff])", r"\1\2", text)
 
-        # 2. 删除英文字符之间的空格数-1（已经实现）
+        # handle spaces between English words
         text = re.sub(r" {2,}", lambda m: m.group(0)[1:], text)
         is_continuation = (
             last_doc_source == current_source
