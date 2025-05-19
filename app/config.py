@@ -10,9 +10,15 @@ DATA_DIR = os.getenv("DATA_DIR", os.path.join(BASE_DIR, "data"))
 DOCUMENTS_DIR = os.getenv("DOCUMENTS_DIR", os.path.join(DATA_DIR, "documents"))
 VECTOR_DB_PATH = os.getenv("VECTOR_DB_PATH", os.path.join(DATA_DIR, "vectordb"))
 
-# Model settings
-DEFAULT_LLM_MODEL = os.getenv("DEFAULT_MODEL", "deepseek-r1:14b")
-DEFAULT_EMBEDDING_MODEL = os.getenv("DEFAULT_EMBEDDING_MODEL", "BAAI/bge-base-zh-v1.5")
+# LLM model settings
+USE_OPENAI = True
+OPENAI_API_KEY = os.environ.get("OPENAI_API_KEY", "")  
+OPENAI_LLM_MODEL = os.environ.get("OPENAI_LLM_MODEL", "gpt-4o") 
+OPENAI_API_BASE = os.environ.get("OPENAI_API_BASE", "")
+LOCAL_LLM_MODEL = os.getenv("LOCAL_LLM_MODEL", "deepseek-r1:14b")
+
+# Embedding settings
+EMBEDDING_MODEL = os.getenv("EMBEDDING_MODEL", "BAAI/bge-base-zh-v1.5")
 MODEL_TEMPERATURE = float(os.getenv("MODEL_TEMPERATURE", "0.1"))
 MODEL_TOP_P = float(os.getenv("MODEL_TOP_P", "0.6"))
 MODEL_NUM_CTX = int(os.getenv("MODEL_NUM_CTX", "8192"))

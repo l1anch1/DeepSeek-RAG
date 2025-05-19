@@ -12,7 +12,6 @@ from flask import (
     stream_with_context,
 )
 
-
 from app.config import SEARCH_K
 
 sys.path.append(os.path.dirname(os.path.abspath(__file__)))
@@ -116,7 +115,13 @@ def stream_query_knowledge_base():
 
             # Start streaming generation - use callback for streaming processing
             for chunk in streaming_llm.stream(full_prompt):
-                yield f"data: {json.dumps({'type': 'token', 'token': chunk})}\n\n"
+
+                if hasattr(chunk, 'content'):  # AIMessageChunk
+                    token_content = chunk.content
+                else:  # string
+                    token_content = chunk
+                    
+                yield f"data: {json.dumps({'type': 'token', 'token': token_content})}\n\n"
 
             # After text generation completes, send source documents information
             yield f"data: {json.dumps({'type': 'sources', 'sources': sources})}\n\n"
@@ -192,17 +197,25 @@ def get_documents():
 @app.route("/api/info", methods=["GET"])
 def get_system_info():
     try:
+        
         from app.config import (
-            DEFAULT_LLM_MODEL,
-            DEFAULT_EMBEDDING_MODEL,
+            LOCAL_LLM_MODEL,
+            EMBEDDING_MODEL,
             MODEL_NUM_THREAD,
+            USE_OPENAI,
+            OPENAI_API_KEY,
+            OPENAI_LLM_MODEL,
         )
 
+        if USE_OPENAI and OPENAI_API_KEY:
+            model = OPENAI_LLM_MODEL
+        else:
+            model = LOCAL_LLM_MODEL
         return jsonify(
             {
                 "status": "success",
-                "model": DEFAULT_LLM_MODEL,
-                "embedding_model": DEFAULT_EMBEDDING_MODEL,
+                "model": model,
+                "embedding_model": EMBEDDING_MODEL,
                 "threads": MODEL_NUM_THREAD,
                 "initialized": global_qa_chain is not None,
             }
@@ -250,9 +263,11 @@ if __name__ == "__main__":
     parser.add_argument(
         "--port", type=int, default=5000, help="Port for the web service"
     )
-    parser.add_argument(
-        "--model", type=str, default="deepseek-r1:14b", help="Large language model"
-    )
+    parser.add_argument(  
+        "--use-openai",   
+        action="store_true",  
+        help="Use OpenAI API instead of local model"  
+    ) 
     parser.add_argument(
         "--embedding-model",
         type=str,
@@ -262,9 +277,9 @@ if __name__ == "__main__":
     parser.add_argument("--num-threads", type=int, default=12, help="threads number")
     args = parser.parse_args()
 
-    os.environ["DEFAULT_MODEL"] = args.model
-    os.environ["DEFAULT_EMBEDDING_MODEL"] = args.embedding_model
+    os.environ["EMBEDDING_MODEL"] = args.embedding_model
     os.environ["MODEL_NUM_THREAD"] = str(args.num_threads)
+    os.environ["USE_OPENAI"] = str(args.use_openai)
 
     init_app()
 

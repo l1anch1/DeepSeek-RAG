@@ -8,3 +8,4 @@ langchain-community>=0.3.19
 langchain-chroma>=0.2.2
 langchain-huggingface>=0.1.2
 sentence-transformers>=3.4.1
+langchain-openai>=0.3.17

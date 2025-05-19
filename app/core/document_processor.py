@@ -174,12 +174,10 @@ def create_vector_store(
             embedding=embeddings,
             persist_directory=VECTOR_DB_PATH,
         )
-
-        print("向量库创建成功")
         return vector_db
 
     except Exception as e:
-        print(f"创建向量库时出错: {str(e)}")
+        print(f"Error creating vector store: {str(e)}")
         return None
 
 
